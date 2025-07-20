@@ -1,0 +1,1022 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  </head>
+
+  <style>
+    @font-face {
+      font-family: Graffiti;
+      src: url(resources/Bebas.ttf);
+    }
+
+    p, text, button, td {
+      font-family: Graffiti;
+      color: white;
+      font-size: larger;
+      text-shadow: -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000,
+        2px 2px 0 #000, 0px -2px 0 #000, 0px 2px 0 #000, -2px 0px 0 #000,
+        2px 0px 0 #000;
+    }
+
+    table, tr, td {
+      border: 2px solid white;
+      border-collapse: collapse;
+      font-size: larger;
+    }
+
+    td {
+      padding-top: 0.36cm; 
+      padding-bottom: 0.36cm;
+    }
+
+    .menu {
+      z-index: -1;
+      position: absolute;
+      object-fit: fill;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+    }
+
+    .title {
+      font-family: Graffiti;
+      font: bolder;
+      color: white;
+      z-index: 1;
+      position: absolute;
+      top: 11%;
+      left: 12%;
+      font-size: 2.3cm;
+    }
+
+    .nights {
+      font-family: Graffiti;
+      font: bolder;
+      color: white;
+      z-index: 1;
+      position: absolute;
+      bottom: 17%;
+      left: -50%;
+      font-size: 1.7cm;
+      text-decoration: none;
+      color: white;
+      display: none;
+      opacity: 0;
+      transition: 0.5s ease;
+    }
+
+    .choice {
+      font-family: Graffiti;
+      font: bolder;
+      color: white;
+      z-index: 1;
+      font-size: 1.7cm;
+      text-decoration: none;
+      color: white;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-evenly;
+      height: 92vh;
+      opacity: 1;
+      transition: 0.5s ease;
+    }
+
+    .choice > *, .title, .nights {
+      text-shadow: -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000,
+        2px 2px 0 #000, 0px -2px 0 #000, 0px 2px 0 #000, -2px 0px 0 #000,
+        2px 0px 0 #000;
+    }
+
+    .Start {
+      color: white;
+      text-decoration: none;
+    }
+
+    .Menu {
+      color: white;
+      text-decoration: none;
+    }
+
+    .Credits {
+      color: white;
+      text-decoration: none;
+    }
+
+    .Mechanics {
+      color: white;
+      text-decoration: none;
+    }
+
+    .Start:hover::before {
+      content: ">>";
+      font-family: Graffiti;
+    }
+
+    .Menu:hover::before {
+      content: ">>";
+      color: white;
+      text-decoration: none;
+      font-family: Graffiti;
+    }
+    .Credits:hover::before {
+      content: ">>";
+      color: white;
+      text-decoration: none;
+      font-family: Graffiti;
+    }
+    .Mechanics:hover::before {
+      content: ">>";
+      color: white;
+      text-decoration: none;
+      font-family: Graffiti;
+    }
+
+    .nights > *:hover::before {
+      content: ">>";
+      color: white;
+      text-decoration: none;
+      font-family: Graffiti;
+    }
+
+    .rights {
+      position: absolute;
+      bottom: 0;
+      right: 8px;
+      color: white;
+      font-family: Graffiti;
+      font-size: 0.6cm;
+    }
+
+    .box {
+    display: flex;
+    align-items: center;
+    border-radius: 10px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    font-size: x-large;
+}
+
+    #Cheesy:hover, #Puzzles:hover, #Meat:hover, #Dognald:hover, #Starla:hover, #Wanted:hover, #Hitler:hover, #Mayo:hover, #Chris:hover, #Monster:hover, #Azrael:hover, #Chicken:hover, #Slim:hover, #Fur:hover, #Fortnite:hover, #Ice:hover, #Peanut:hover, #Stalin:hover {
+      opacity: 0.5;
+      cursor: pointer;
+    }
+  </style>
+
+  <body>
+    <audio src="resources/blip3.wav" class="hover"></audio>
+    <audio src="resources/menu theme.mp3" autoplay loop></audio>
+    <video class="menu" src="resources/Menu.mov" autoplay muted loop disablepictureinpicture></video>
+
+    <main>
+    <div class="title">
+      <span> Five </span> <br />
+      <span> Nights at </span> <br />
+      <span> Azraeo's Whorehouse </span> <br />
+      <span><img src="resources/Trophy.webp" height="130px" width="120px" title="5 nights completed!" id="AllNights"> <img src="resources/Trophy.webp" height="130px" width="120px" title="all items bought!" id="AllBought" style="display: none;"></span>
+      
+    </div>
+    <div class="nights" onmouseover="hover()">
+      <span> <a href="Night1.html"> Night 1 </a> </span> <br />
+      <span id="Night2"> <a href="Night2.html"> Night 2 </a> </span> <br />
+      <span id="Night3"> <a href="Night3.html"> Night 3 </a> </span> <br />
+      <span id="Night4"> <a href="Night4.html"> Night 4 </a> </span> <br />
+      <span id="Night5"> <a href="Night5.html"> Night 5 </a> </span> <br />
+    </div>
+    <div class="choice" onmouseover="hover()">
+      <div><p class="Start" onclick="nightsel()">Start</p></div>
+      <div><p class="Menu">Restaurant</p></div>
+      <div><p class="Mechanics">Mechanics</p></div>
+      <div><p class="Credits">Credits</p></div>
+    </div>
+
+    <p class="rights">&copy; 2025-2025 Az</p>
+
+    </main>
+
+    <div id="fullscreen" style="display: none; position: absolute; background-color: black; top: 0; bottom: 0; left: 0; right: 0; z-index: 66;">
+      <center> <p> please play in fullscreen! </p></center>
+    </div>
+
+
+    <div id="Mech" style="display: none; position: absolute; backdrop-filter: blur(10px); top: 0; bottom: 0; left: 0; right: 0; z-index: 66;">
+
+      <text id="leave" style="font-size: 1cm;"> < </text>
+      <hr>
+      <br>
+
+    <div class="box" id="Ky">
+                <img src="resources/KyMechanic.webp" width="150cm" height="150cm">
+                <div class="item-info">
+                    <p class="item-nazwa">Kylin</p>
+                    <p> will try to hunt you down from the right door </p>
+                </div>
+            </div> <br> <br>
+
+    <div class="box" id="Snorts">
+                <img src="resources/SnortsMechanic.webp" width="150cm" height="150cm">
+                <div class="item-info">
+                    <p class="item-nazwa">Snorts</p>
+                    <p> will try to hunt you down from the left door </p>
+                </div> 
+            </div> <br> <br>
+
+    <div class="box" id="Geo">
+                <img src="resources/GeoMechanic.webp" width="150cm" height="150cm">
+                <div class="item-info">
+                    <p class="item-nazwa">Geo</p>
+                    <p> will attack from the left after leaving his room </p>
+                </div>
+            </div> <br> <br>
+
+    <div class="box" id="Az">
+                <img src="resources/AzMechanic.webp" width="150cm" height="150cm">
+                <div class="item-info">
+                    <p class="item-nazwa">Azraeo</p>
+                    <p> will try to hunt you down from both doors </p>
+                </div>
+            </div> <br> <br>
+
+    <div class="box" id="Volce">
+                <img src="resources/VolceMechanic.webp" width="150cm" height="150cm">
+                <div class="item-info">
+                    <p class="item-nazwa">Volce</p>
+                    <p> will ring a bell when appearing, find him and stare him down </p>
+                </div> 
+            </div> <br>
+
+        <hr>
+
+    </div>
+
+
+    <div id="Store" style="display: none; position: absolute; background-color: rgb(49, 48, 48); top: 0; bottom: 0; left: 0; right: 0; z-index: 66;">
+      <text id="close" style="font-size: 1.5cm;"> < </text>
+      <div style="position: absolute; border: 2px solid white; top: 25px; bottom: 25px; left: 25px; right: 25px; overflow: auto;">
+        <p style="font-size: 3cm; margin-top: 0; margin-left: 1cm; margin-bottom: 20px; color: aquamarine;">Main Meals <span style="position: absolute; right: 10px;"> $<span id="dollacount"></span></span></p>
+        <table>
+          <tr>
+            <td style="padding-right: 85vi; color: aquamarine;" id="Cheesy"> Peesy Chenis - <span id="cheesyCost"> $60 </span> </td>
+          <tr>
+            <td>
+             <li> 20 lb beef burger loaded with munster cheese </li>
+             <li> 7 pints </li>
+            </td>
+          </tr>
+          </tr>
+
+          <tr>
+            <td style="color:  aquamarine;" id="Puzzles"> Puzzles? - <span id="puzzleCost"> $75 </span> </td>
+          <tr>
+            <td>
+            <li> Gives you a 750 piece puzzle </li>
+            <li> 25 bonie-in or boneless wings (your chocice)</li>
+            </td>
+          </tr>
+          </tr>
+
+          <tr>
+            <td style="color:  aquamarine;" id="Meat">Meat Stick Mfer - <span id="meatCost"> $80 </span></td>
+          <tr>
+            <td>
+              <li> Gives you 10 chicken tenders to any meal </li>
+            </td>
+          </tr>
+          </tr>
+
+          <tr>
+            <td style="color:  aquamarine;" id="Dognald">Dognald Trump - <span id="dogCost"> $85 </span></td>
+            <tr>
+              <td>
+                <li> Orange juice in a dog cup</li>
+              </td>
+            </tr>
+          </tr>
+
+          <tr>
+            <td style="color:  aquamarine;" id="Starla">Starla - <span id="starlaCost"> $90 </span></td>
+            <tr>
+              <td>
+                <li> Gives you a star on your back, congrats, youre wanted in 47 states</li>
+              </td>
+            </tr>
+          </tr>
+
+          <tr>
+            <td style="color:  aquamarine;" id="Wanted">Wanted in 47 States Souffle - <span id="wantedCost"> $95 </span></td>
+            <tr>
+              <td>
+                <li> Gives you superhuman abilities </li>
+              </td>
+            </tr>
+          </tr>
+        </table>
+        <p style="font-size: 3cm; margin-top: 0; margin-left: 1cm; margin-bottom: 20px; color: aquamarine;">Side Dishes / Sauces </p>
+        <table>
+          <tr>
+            <td style="padding-right: 85vi; color: aquamarine;" id="Hitler"> Hitler Hotdog - <span id="hitlerCost"> $90 </span> </td>
+          <tr>
+            <td>
+             <li> 12 inch Hot Dog with a mustache </li>
+             <li> Turns you into Kanye West </li>
+            </td>
+          </tr>
+          </tr>
+
+          <tr>
+            <td style="color:  aquamarine;" id="Mayo"> Mayojuana - <span id="mayoCost"> $95 </span> </td>
+          <tr>
+            <td>
+            <li> No comment </li>
+            </td>
+          </tr>
+          </tr>
+
+          <tr>
+            <td style="color:  aquamarine;" id="Chris">ChrisTheBurger - <span id="chrisCost"> $100 </span></td>
+          <tr>
+            <td>
+              <li> A 13 ounce burger. (Please don't order this, I have to find a cow named Chris and kill it) </li>
+            </td>
+          </tr>
+          </tr>
+
+          <tr>
+            <td style="color:  aquamarine;" id="Monster">Monster Energy Shampoo - <span id="monsterCost"> $110 </span></td>
+            <tr>
+              <td>
+                <li> Shampoo filled with monster energy. (Also works as Pre Workout and Creatine) </li>
+              </td>
+            </tr>
+          </tr>
+
+          <tr>
+            <td style="color:  aquamarine;" id="Azrael">Azrael burger - <span id="azraelCost"> $115 </span></td>
+            <tr>
+              <td>
+                <li> Fucking kills you </li>
+              </td>
+            </tr>
+          </tr>
+
+          <tr>
+            <td style="color:  aquamarine;" id="Chicken">Chicken Alfredo - <span id="chickenCost"> $120 </span></td>
+            <tr>
+              <td>
+                <li> Azraeo likes chicken alfredo </li>
+              </td>
+            </tr>
+          </tr>
+        </table>
+
+        <p style="font-size: 3cm; margin-top: 0; margin-left: 1cm; margin-bottom: 20px; color: aquamarine;">Desserts </p>
+        <table>
+          <tr>
+            <td style="padding-right: 85vi; color: aquamarine;" id="Slim"> 57 Slim Jims - <span id="slimCost"> $110 </span> </td>
+          <tr>
+            <td>
+             <li> Exacly what it says </li>
+            </td>
+          </tr>
+          </tr>
+
+          <tr>
+            <td style="color:  aquamarine;" id="Fur"> Furburger - <span id="furCost"> $115 </span> </td>
+          <tr>
+            <td>
+            <li> Gives you a burger made of jello </li>
+            </td>
+          </tr>
+          </tr>
+
+          <tr>
+            <td style="color:  aquamarine;" id="Fortnite">Fortnite Sliders - <span id="fortniteCost"> $120 </span></td>
+          <tr>
+            <td>
+              <li> Gives you 14 burger sliders of Mezmer </li>
+            </td>
+          </tr>
+          </tr>
+
+          <tr>
+            <td style="color:  aquamarine;" id="Ice">5 Ice Creams - <span id="iceCost"> $125 </span></td>
+            <tr>
+              <td>
+                <li> Exacly what it says </li>
+              </td>
+            </tr>
+          </tr>
+
+          <tr>
+            <td style="color:  aquamarine;" id="Peanut">Peanut Butter - <span id="peanutCost"> $130 </span></td>
+            <tr>
+              <td>
+                <li> Instant death </li>
+              </td>
+            </tr>
+          </tr>
+
+          <tr>
+            <td style="color:  aquamarine;" id="Stalin">Stalin Fries - <span id="stalinCost"> $145 </span></td>
+            <tr>
+              <td>
+                <li> Stalin Fries </li>
+              </td>
+            </tr>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <div id="Credits" style="display: none; position: absolute; backdrop-filter: blur(10px); top: 0; bottom: 0; left: 0; right: 0; z-index: 66;">
+      <text id="leaveCredits" style="font-size: 1cm;"> < </text>
+
+      <hr>
+      <br>
+      <center>
+        
+       <p> idea by Gever </p>
+       <p> game by Flipper781 </p>
+
+       <p> Actors: </p>
+       <p> Kylin as Kylin </p>
+       <p> Snorts as Snorts </p>
+       <p> Geo as Geo </p>
+       <p> Azraeo as Azraeo </p>
+       <p> Volce as Volce </p>
+
+      <p>Phone guy voice: Pawel Pro on ElevenLabs & Duke Nukem </p>
+
+      </center>
+      <br>
+      <hr>
+    </div>
+
+    <div id="poor" style="z-index: 100; display: none; position: absolute; border: 4px solid black; bottom: 7cm; left: 43vi; background-color: yellow;"> <p style="margin: 20px;"> you are too poor! </p> </div>
+    <div id="owned" style="z-index: 100; display: none; position: absolute; border: 4px solid black; bottom: 7cm; left: 43vi; background-color: yellow;"> <p style="margin: 20px;"> you already have this! </p> </div>
+
+    <audio src="resources/menu.mp3" id="open"></audio>
+    <audio src="resources/purchase.mp3" id="buy"></audio>
+
+    <script>
+
+      function isFullscreen() {
+  return (
+    window.innerHeight === screen.height &&
+    window.innerWidth === screen.width
+  );
+}
+
+function checkFullscreen() {
+  if (isFullscreen()) {
+    $("#fullscreen").fadeOut(); // in fullscreen
+  } else {
+    $("#fullscreen").fadeIn(); // not in fullscreen
+  }
+}
+
+// Listen to both events
+document.addEventListener("fullscreenchange", checkFullscreen);
+window.addEventListener("resize", checkFullscreen);
+
+// Initial check (in case they load already fullscreen)
+checkFullscreen();
+
+
+
+
+      let dolla = localStorage.getItem("dolla")
+      if (!dolla) {
+      dolla = 0;
+      localStorage.setItem("dolla", dolla);
+      }
+
+      $("#dollacount").text(dolla)
+
+
+      function hover() {
+        let blip = new Audio("resources/blip3.wav")
+        blip.play()
+      }
+
+      let nights = document.querySelector(".nights")
+      let choice = document.querySelector(".choice")
+
+      function nightsel() {
+        $(".choice").css("position", "relative") .animate(
+            {
+              top: "+=1000px",
+            }, 400).delay().fadeOut()
+        setTimeout(() => {
+          nights.style.display = "block"
+          setTimeout(() => {
+            nights.style.opacity = 1
+            nights.style.left = "11%"
+            nights.style.transition = "0.5s"
+          }, 500)
+        }, 500)
+      }
+
+      let Night1Complete = localStorage.getItem("Night1Complete") === "true"
+
+      if (!Night1Complete) {
+        $("#Night2").hide()
+      }
+
+      let Night2Complete = localStorage.getItem("Night2Complete") === "true"
+
+      if (!Night2Complete) {
+        $("#Night3").hide()
+      }
+
+      let Night3Complete = localStorage.getItem("Night3Complete") === "true"
+
+      if (!Night3Complete) {
+        $("#Night4").hide()
+      }
+
+      let Night4Complete = localStorage.getItem("Night4Complete") === "true"
+
+      if (!Night4Complete) {
+        $("#Night5").hide()
+      }
+
+      let Night5Complete = localStorage.getItem("Night5Complete") === "true"
+
+      if (!Night5Complete) {
+        $("#AllNights").hide()
+      }
+
+      $(".Mechanics").click(function() {
+        $("#Mech").slideToggle()
+      })
+
+      $(".Credits").click(function() {
+        $("#Credits").slideToggle()
+      })
+
+      $("#leave").click(function() {
+        $("#Mech").slideToggle()
+      })
+
+      $("#leaveCredits").click(function() {
+        $("#Credits").slideToggle()
+      })
+
+      $(".Menu").click(function() {
+        $("#Store").slideToggle()
+        $("#open").trigger("play")
+      })
+
+      $("#close").click(function() {
+        $("#Store").slideToggle()
+        $("#open").trigger("play")
+      })
+
+      let Night1Started = localStorage.getItem("Night1Started") === "true"
+
+      if (!Night1Started) {
+        $("#Ky").hide()
+      }
+
+      let Night2Started = localStorage.getItem("Night2Started") === "true"
+
+      if (!Night2Started) {
+        $("#Snorts").hide()
+        $("#Geo").hide()
+      }
+
+      let Night3Started = localStorage.getItem("Night3Started") === "true"
+
+      if (!Night3Started) {
+        $("#Az").hide()
+      }
+
+      let Night4Started = localStorage.getItem("Night4Started") === "true"
+
+      if (!Night4Started) {
+        $("#Volce").hide()
+      }
+
+      let ChenisOwn = localStorage.getItem("ChenisOwn") === "true"
+
+      if (!ChenisOwn) {
+      $("#Cheesy").click(function() {
+        if (dolla >= 60) {
+        $("#cheesyCost").text("bought!")
+        $("#buy").trigger("play")
+        dolla -= 60
+        localStorage.setItem("dolla", dolla)
+        $("#dollacount").text(dolla)
+        localStorage.setItem("ChenisOwn", "true")
+      } else {
+        $("#poor").fadeToggle().delay(3000).fadeToggle()
+      }
+    })
+  } else {
+    $("#cheesyCost").text("bought!")
+    $("#Cheesy").click(function() {
+      $("#owned").fadeToggle().delay(3000).fadeToggle()
+    })
+  }
+
+  let puzzleOwn = localStorage.getItem("puzzleOwn") === "true"
+
+      if (!puzzleOwn) {
+      $("#Puzzles").click(function() {
+        if (dolla >= 75) {
+        $("#puzzleCost").text("bought!")
+        $("#buy").trigger("play")
+        dolla -= 75
+        localStorage.setItem("dolla", dolla)
+        $("#dollacount").text(dolla)
+        localStorage.setItem("puzzleOwn", "true")
+      } else {
+        $("#poor").fadeToggle().delay(3000).fadeToggle()
+      }
+    })
+  } else {
+    $("#puzzleCost").text("bought!")
+    $("#Puzzles").click(function() {
+      $("#owned").fadeToggle().delay(3000).fadeToggle()
+    })
+  }
+
+  let meatOwn = localStorage.getItem("meatOwn") === "true"
+
+      if (!meatOwn) {
+      $("#Meat").click(function() {
+        if (dolla >= 80) {
+        $("#meatCost").text("bought!")
+        $("#buy").trigger("play")
+        dolla -= 80
+        localStorage.setItem("dolla", dolla)
+        $("#dollacount").text(dolla)
+        localStorage.setItem("meatOwn", "true")
+      } else {
+        $("#poor").fadeToggle().delay(3000).fadeToggle()
+      }
+    })
+  } else {
+    $("#meatCost").text("bought!")
+    $("#Meat").click(function() {
+      $("#owned").fadeToggle().delay(3000).fadeToggle()
+    })
+  }
+
+  let dogOwn = localStorage.getItem("dogOwn") === "true"
+
+      if (!dogOwn) {
+      $("#Dognald").click(function() {
+        if (dolla >= 85) {
+        $("#dogCost").text("bought!")
+        $("#buy").trigger("play")
+        dolla -= 85
+        localStorage.setItem("dolla", dolla)
+        $("#dollacount").text(dolla)
+        localStorage.setItem("dogOwn", "true")
+      } else {
+        $("#poor").fadeToggle().delay(3000).fadeToggle()
+      }
+    })
+  } else {
+    $("#dogCost").text("bought!")
+    $("#Dognald").click(function() {
+      $("#owned").fadeToggle().delay(3000).fadeToggle()
+    })
+  }
+
+  let starlaOwn = localStorage.getItem("starlaOwn") === "true"
+
+      if (!starlaOwn) {
+      $("#Starla").click(function() {
+        if (dolla >= 90) {
+        $("#starlaCost").text("bought!")
+        $("#buy").trigger("play")
+        dolla -= 90
+        localStorage.setItem("dolla", dolla)
+        $("#dollacount").text(dolla)
+        localStorage.setItem("starlaOwn", "true")
+      } else {
+        $("#poor").fadeToggle().delay(3000).fadeToggle()
+      }
+    })
+  } else {
+    $("#starlaCost").text("bought!")
+    $("#Starla").click(function() {
+      $("#owned").fadeToggle().delay(3000).fadeToggle()
+    })
+  }
+
+  let wantedOwn = localStorage.getItem("wantedOwn") === "true"
+
+      if (!wantedOwn) {
+      $("#Wanted").click(function() {
+        if (dolla >= 95) {
+        $("#wantedCost").text("bought!")
+        $("#buy").trigger("play")
+        dolla -= 95
+        localStorage.setItem("dolla", dolla)
+        $("#dollacount").text(dolla)
+        localStorage.setItem("wantedOwn", "true")
+      } else {
+        $("#poor").fadeToggle().delay(3000).fadeToggle()
+      }
+    })
+  } else {
+    $("#wantedCost").text("bought!")
+    $("#Wanted").click(function() {
+      $("#owned").fadeToggle().delay(3000).fadeToggle()
+    })
+  }
+
+  let hitlerOwn = localStorage.getItem("hitlerOwn") === "true"
+
+      if (!hitlerOwn) {
+      $("#Hitler").click(function() {
+        if (dolla >= 90) {
+        $("#hitlerCost").text("bought!")
+        $("#buy").trigger("play")
+        dolla -= 90
+        localStorage.setItem("dolla", dolla)
+        $("#dollacount").text(dolla)
+        localStorage.setItem("hitlerOwn", "true")
+      } else {
+        $("#poor").fadeToggle().delay(3000).fadeToggle()
+      }
+    })
+  } else {
+    $("#hitlerCost").text("bought!")
+    $("#Hitler").click(function() {
+      $("#owned").fadeToggle().delay(3000).fadeToggle()
+    })
+  }
+   
+  let mayoOwn = localStorage.getItem("mayoOwn") === "true"
+
+      if (!mayoOwn) {
+      $("#Mayo").click(function() {
+        if (dolla >= 95) {
+        $("#mayoCost").text("bought!")
+        $("#buy").trigger("play")
+        dolla -= 95
+        localStorage.setItem("dolla", dolla)
+        $("#dollacount").text(dolla)
+        localStorage.setItem("mayoOwn", "true")
+      } else {
+        $("#poor").fadeToggle().delay(3000).fadeToggle()
+      }
+    })
+  } else {
+    $("#mayoCost").text("bought!")
+    $("#Mayo").click(function() {
+      $("#owned").fadeToggle().delay(3000).fadeToggle()
+    })
+  }
+
+  let chrisOwn = localStorage.getItem("chrisOwn") === "true"
+
+      if (!chrisOwn) {
+      $("#Chris").click(function() {
+        if (dolla >= 100) {
+        $("#chrisCost").text("bought!")
+        $("#buy").trigger("play")
+        dolla -= 100
+        localStorage.setItem("dolla", dolla)
+        $("#dollacount").text(dolla)
+        localStorage.setItem("chrisOwn", "true")
+      } else {
+        $("#poor").fadeToggle().delay(3000).fadeToggle()
+      }
+    })
+  } else {
+    $("#chrisCost").text("bought!")
+    $("#Chris").click(function() {
+      $("#owned").fadeToggle().delay(3000).fadeToggle()
+    })
+  }
+
+  let monsterOwn = localStorage.getItem("monsterOwn") === "true"
+
+      if (!monsterOwn) {
+      $("#Monster").click(function() {
+        if (dolla >= 110) {
+        $("#monsterCost").text("bought!")
+        $("#buy").trigger("play")
+        dolla -= 110
+        localStorage.setItem("dolla", dolla)
+        $("#dollacount").text(dolla)
+        localStorage.setItem("monsterOwn", "true")
+      } else {
+        $("#poor").fadeToggle().delay(3000).fadeToggle()
+      }
+    })
+  } else {
+    $("#monsterCost").text("bought!")
+    $("#Monster").click(function() {
+      $("#owned").fadeToggle().delay(3000).fadeToggle()
+    })
+  }
+
+  let azraelOwn = localStorage.getItem("azraelOwn") === "true"
+
+      if (!azraelOwn) {
+      $("#Azrael").click(function() {
+        if (dolla >= 115) {
+        $("#azraelCost").text("bought!")
+        $("#buy").trigger("play")
+        dolla -= 115
+        localStorage.setItem("dolla", dolla)
+        $("#dollacount").text(dolla)
+        localStorage.setItem("azraelOwn", "true")
+      } else {
+        $("#poor").fadeToggle().delay(3000).fadeToggle()
+      }
+    })
+  } else {
+    $("#azraelCost").text("bought!")
+    $("#Azrael").click(function() {
+      $("#owned").fadeToggle().delay(3000).fadeToggle()
+    })
+  }
+
+  let chickenOwn = localStorage.getItem("chickenOwn") === "true"
+
+      if (!chickenOwn) {
+      $("#Chicken").click(function() {
+        if (dolla >= 120) {
+        $("#chickenCost").text("bought!")
+        $("#buy").trigger("play")
+        dolla -= 120
+        localStorage.setItem("dolla", dolla)
+        $("#dollacount").text(dolla)
+        localStorage.setItem("chickenOwn", "true")
+      } else {
+        $("#poor").fadeToggle().delay(3000).fadeToggle()
+      }
+    })
+  } else {
+    $("#chickenCost").text("bought!")
+    $("#Chicken").click(function() {
+      $("#owned").fadeToggle().delay(3000).fadeToggle()
+    })
+  }
+
+  let slimOwn = localStorage.getItem("slimOwn") === "true"
+
+      if (!slimOwn) {
+      $("#Slim").click(function() {
+        if (dolla >= 110) {
+        $("#slimCost").text("bought!")
+        $("#buy").trigger("play")
+        dolla -= 120
+        localStorage.setItem("dolla", dolla)
+        $("#dollacount").text(dolla)
+        localStorage.setItem("slimOwn", "true")
+      } else {
+        $("#poor").fadeToggle().delay(3000).fadeToggle()
+      }
+    })
+  } else {
+    $("#slimCost").text("bought!")
+    $("#Slim").click(function() {
+      $("#owned").fadeToggle().delay(3000).fadeToggle()
+    })
+  }
+
+  let furOwn = localStorage.getItem("furOwn") === "true"
+
+      if (!furOwn) {
+      $("#Fur").click(function() {
+        if (dolla >= 115) {
+        $("#furCost").text("bought!")
+        $("#buy").trigger("play")
+        dolla -= 115
+        localStorage.setItem("dolla", dolla)
+        $("#dollacount").text(dolla)
+        localStorage.setItem("furOwn", "true")
+      } else {
+        $("#poor").fadeToggle().delay(3000).fadeToggle()
+      }
+    })
+  } else {
+    $("#furCost").text("bought!")
+    $("#Fur").click(function() {
+      $("#owned").fadeToggle().delay(3000).fadeToggle()
+    })
+  }
+
+  let fortniteOwn = localStorage.getItem("fortniteOwn") === "true"
+
+      if (!fortniteOwn) {
+      $("#Fortnite").click(function() {
+        if (dolla >= 120) {
+        $("#fortniteCost").text("bought!")
+        $("#buy").trigger("play")
+        dolla -= 120
+        localStorage.setItem("dolla", dolla)
+        $("#dollacount").text(dolla)
+        localStorage.setItem("fortniteOwn", "true")
+      } else {
+        $("#poor").fadeToggle().delay(3000).fadeToggle()
+      }
+    })
+  } else {
+    $("#fortniteCost").text("bought!")
+    $("#Fortnite").click(function() {
+      $("#owned").fadeToggle().delay(3000).fadeToggle()
+    })
+  }
+
+  let iceOwn = localStorage.getItem("iceOwn") === "true"
+
+      if (!iceOwn) {
+      $("#Ice").click(function() {
+        if (dolla >= 125) {
+        $("#iceCost").text("bought!")
+        $("#buy").trigger("play")
+        dolla -= 125
+        localStorage.setItem("dolla", dolla)
+        $("#dollacount").text(dolla)
+        localStorage.setItem("iceOwn", "true")
+      } else {
+        $("#poor").fadeToggle().delay(3000).fadeToggle()
+      }
+    })
+  } else {
+    $("#iceCost").text("bought!")
+    $("#Ice").click(function() {
+      $("#owned").fadeToggle().delay(3000).fadeToggle()
+    })
+  }
+
+  let peanutOwn = localStorage.getItem("peanutOwn") === "true"
+
+      if (!peanutOwn) {
+      $("#Peanut").click(function() {
+        if (dolla >= 130) {
+        $("#peanutCost").text("bought!")
+        $("#buy").trigger("play")
+        dolla -= 130
+        localStorage.setItem("dolla", dolla)
+        $("#dollacount").text(dolla)
+        localStorage.setItem("peanutOwn", "true")
+      } else {
+        $("#poor").fadeToggle().delay(3000).fadeToggle()
+      }
+    })
+  } else {
+    $("#peanutCost").text("bought!")
+    $("#Peanut").click(function() {
+      $("#owned").fadeToggle().delay(3000).fadeToggle()
+    })
+  }
+
+  let stalinOwn = localStorage.getItem("stalinOwn") === "true"
+
+      if (!stalinOwn) {
+      $("#Stalin").click(function() {
+        if (dolla >= 145) {
+        $("#stalinCost").text("bought!")
+        $("#buy").trigger("play")
+        dolla -= 145
+        localStorage.setItem("dolla", dolla)
+        $("#dollacount").text(dolla)  
+        localStorage.setItem("stalinOwn", "true")
+      } else {
+        $("#poor").fadeToggle().delay(3000).fadeToggle()
+      }
+    })
+  } else {
+    $("#stalinCost").text("bought!")
+    $("#Stalin").click(function() {
+      $("#owned").fadeToggle().delay(3000).fadeToggle()
+    })
+  }
+  
+  setInterval(() => {
+  if (ChenisOwn && puzzleOwn && meatOwn && dogOwn && starlaOwn && wantedOwn && hitlerOwn && mayoOwn && chrisOwn && monsterOwn && azraelOwn && chickenOwn && slimOwn && furOwn && fortniteOwn && iceOwn && peanutOwn && stalinOwn) {
+    $("#AllBought").show()
+  }
+}, 10)
+
+  let BonusPower = localStorage.getItem("BonusPower") === "true"
+
+  if (hitlerOwn && mayoOwn && chrisOwn && monsterOwn && azraelOwn && chickenOwn) {
+    localStorage.setItem("BonusPower", "true")
+  }
+
+  // let hotdogown = localStorage.getItem("hotdogown") === "true"
+  // if (hitlerOwn) {
+  //   localStorage.setItem("hotdogown", "true")
+  // }
+
+    </script>
+  </body>
+</html>
