@@ -415,71 +415,84 @@ const kylinPath = ["Start", "Backstage", "Main Stage", "Dining Area", "Right Hal
 let KyInterval
 
 function moveKylin() {
-    const currentIndex = kylinPath.indexOf(kylinLocation)
+    const currentIndex = kylinPath.indexOf(kylinLocation);
 
-    if ( kylinLocation === "Dining Area" && Math.random() < 0.3) {
-        kylinLocation = "Gas Chamber"
-        updateCamera()
-        console.log("Kylin moved to Gas Chamber")
+    if (kylinLocation === "Dining Area" && Math.random() < 0.3) {
+        kylinLocation = "Gas Chamber";
+        updateCamera();
+        console.log("Kylin moved to Gas Chamber");
 
-        const returnTime = Math.random() * 20000 + 15000
+        const returnTime = Math.random() * 20000 + 15000;
         setTimeout(() => {
-            kylinLocation = "Dining Area"
-            updateCamera()
-            console.log("Kylin moved to Dining Area")
+            kylinLocation = "Dining Area";
+            updateCamera();
+            console.log("Kylin returned to Dining Area");
 
-            const nextMoveTime = Math.random() * 20000 + 15000
-            KyInterval = setTimeout(moveKylin, nextMoveTime)
-        }, returnTime)
-
-        return
+            const nextMoveTime = Math.random() * 20000 + 15000;
+            KyInterval = setTimeout(moveKylin, nextMoveTime);
+        }, returnTime);
+        return;
     }
 
     if (currentIndex < kylinPath.length - 1) {
-        kylinLocation = kylinPath[currentIndex + 1]
-        updateCamera()
-        console.log(`Kylin moved to ${kylinLocation}`)
+        kylinLocation = kylinPath[currentIndex + 1];
+        updateCamera();
+        console.log(`Kylin moved to ${kylinLocation}`);
 
         if (kylinLocation === "Right Door") {
-            let doorinterval = setInterval(function() {
+            let doorinterval = setInterval(() => {
                 if (kylinLocation === "Right Door") {
                     if (rightdoorclosed) {
-                        $("#rightdoor").attr("src", "resources/doorclose.png")
+                        $("#rightdoor").attr("src", "resources/doorclose.png");
                     } else {
-                        $("#rightdoor").attr("src", "resources/doorKy.png")
+                        $("#rightdoor").attr("src", "resources/doorKy.png");
                     }
                 } else {
-                    $("#rightdoor").attr("src", "resources/dooropen.png")
+                    $("#rightdoor").attr("src", "resources/dooropen.png");
                 }
-                }, 10)
+            }, 10);
+
+            let doorTime = 0;
+            let doorCheckInterval = setInterval(() => {
+                if (rightdoorclosed && kylinLocation === "Right Door") {
+                    doorTime += 100;
+                    if (doorTime >= 3000) {
+                        clearInterval(doorCheckInterval);
+                        clearInterval(doorinterval);
+                        power -= 8;
+                        $("#powerleft").text(power + "%");
+                        $("#Knock").trigger("play");
+                        kylinLocation = "Main Stage";
+                        console.log("You blocked Kylin. -8% power.");
+                        updateCamera();
+                        const nextMoveTime = Math.random() * 20000 + 15000;
+                        KyInterval = setTimeout(moveKylin, nextMoveTime);
+                    }
+                } else {
+                    doorTime = 0;
+                }
+            }, 100);
 
             setTimeout(() => {
-                if (rightdoorclosed) {
-                    clearInterval(doorinterval)
-                    power -= 8
-                    $("#powerleft").text(power + "%")
-                    $("#Knock").trigger("play")
-                    kylinLocation = "Main Stage"
-                    console.log("You blocked Kylin. -8% power.")
-                    updateCamera()
-                    const nextMoveTime = Math.random() * 20000 + 15000
-                    KyInterval = setTimeout(moveKylin, nextMoveTime)
-                } else {
-                    buzz.volume = 0
-                    $("#KyJumpscare").show()
-                    $("#KyJumpscare").trigger("play")
-                    gameOver("You died to Ky")
-                    setTimeout(function() { $("#KySpeech").trigger("play") }, 1300)
+                clearInterval(doorCheckInterval);
+                if (kylinLocation === "Right Door" && doorTime < 3000) {
+                    clearInterval(doorinterval);
+                    buzz.volume = 0;
+                    $("#KyJumpscare").show();
+                    $("#KyJumpscare").trigger("play");
+                    gameOver("You died to Ky");
+                    setTimeout(() => {
+                        $("#KySpeech").trigger("play");
+                    }, 1300);
                 }
-            }, 10000)
-        }
+            }, 10000);
 
-        else {
-        const nextMoveTime = Math.random() * 20000 + 15000
-        KyInterval = setTimeout(moveKylin, nextMoveTime)
-}
-    }
+        } else {
+            const nextMoveTime = Math.random() * 20000 + 15000;
+            KyInterval = setTimeout(moveKylin, nextMoveTime);
         }
+    }
+}
 
 
 
@@ -526,33 +539,44 @@ function moveSnorts() {
                 }
                 }, 10)
 
-            setTimeout(() => {
-                if (leftdoorclosed) {
-                    clearInterval(doorinterval)
-                    power -= 7
-                    $("#powerleft").text(power + "%")
-                    $("#Knock").trigger("play")
-                    snortsLocation = "Main Stage"
-                    console.log("You blocked Snorts. -7% power.")
-                    updateCamera()
-                    const nextMoveTime = Math.random() * 15000 + 15000
-                    SnortsInterval = setTimeout(moveSnorts, nextMoveTime)
+            let doorTime = 0;
+            let doorCheck = setInterval(() => {
+                if (leftdoorclosed && snortsLocation === "Left Door") {
+                    doorTime += 100;
+                    if (doorTime >= 3000) {
+                        clearInterval(doorCheck);
+                        clearInterval(doorinterval);
+                        power -= 7;
+                        $("#powerleft").text(power + "%");
+                        $("#Knock").trigger("play");
+                        snortsLocation = "Main Stage";
+                        console.log("You blocked Snorts. -7% power.");
+                        updateCamera();
+                        const nextMoveTime = Math.random() * 15000 + 15000;
+                        SnortsInterval = setTimeout(moveSnorts, nextMoveTime);
+                    }
                 } else {
-                    buzz.volume = 0
-                    $("#SnortsJumpscare").show()
-                    $("#SnortsJumpscare").trigger("play")
-                    gameOver("You died to Snorts")
-                    setTimeout(function() { $("#SnortsSpeech").trigger("play") }, 1300)
+                    doorTime = 0;
                 }
-            }, 7000)
-        }
+            }, 100);
 
-        else {
-        const nextMoveTime = Math.random() * 15000 + 15000
-        SnortsInterval = setTimeout(moveSnorts, nextMoveTime)
-}
-    }
+            setTimeout(() => {
+                clearInterval(doorCheck);
+                if (snortsLocation === "Left Door" && doorTime < 3000) {
+                    clearInterval(doorinterval);
+                    buzz.volume = 0;
+                    $("#SnortsJumpscare").show();
+                    $("#SnortsJumpscare").trigger("play");
+                    gameOver("You died to Snorts");
+                    setTimeout(() => { $("#SnortsSpeech").trigger("play"); }, 1300);
+                }
+            }, 10000);
+        } else {
+            const nextMoveTime = Math.random() * 15000 + 15000;
+            SnortsInterval = setTimeout(moveSnorts, nextMoveTime);
         }
+    }
+}
 
 
 let geoLocation = "Start"
@@ -568,32 +592,43 @@ function moveGeo() {
         console.log(`Geo is on ${geoLocation}`)
 
         if (geoLocation === "Left Door") {
-            GeoInterval = setTimeout(() => {
-                if (leftdoorclosed) {
-                    power -= 5
-                    $("#powerleft").text(power + "%")
-                    $("#Knock").trigger("play")
-                    geoLocation = "Stage 1"
-                    console.log("You blocked Geo. -5% power.")
-                    updateCamera()
-                    const nextMoveTime = Math.random() * 10000 + 10000
-                    GeoInterval = setTimeout(moveGeo, nextMoveTime)
-                } else {
-                    buzz.volume = 0
-                    $("#GeoJumpscare").show()
-                    $("#GeoJumpscare").trigger("play")
-                    gameOver("You died to Geo")
-                    setTimeout(function() { $("#GeoSpeech").trigger("play") }, 1300)
-                }
-            }, 13000)
-        }
+            let doorTime = 0;
 
-        else {
-        const nextMoveTime = Math.random() * 10000 + 15000
-        GeoInterval = setTimeout(moveGeo, nextMoveTime)
-}
-    }
+            let doorCheck = setInterval(() => {
+                if (leftdoorclosed && geoLocation === "Left Door") {
+                    doorTime += 100;
+                    if (doorTime >= 3000) {
+                        clearInterval(doorCheck);
+                        power -= 5;
+                        $("#powerleft").text(power + "%");
+                        $("#Knock").trigger("play");
+                        geoLocation = "Stage 1";
+                        console.log("You blocked Geo. -5% power.");
+                        updateCamera();
+                        const nextMoveTime = Math.random() * 10000 + 10000;
+                        GeoInterval = setTimeout(moveGeo, nextMoveTime);
+                    }
+                } else {
+                    doorTime = 0;
+                }
+            }, 100);
+
+            setTimeout(() => {
+                clearInterval(doorCheck);
+                if (geoLocation === "Left Door" && doorTime < 3000) {
+                    buzz.volume = 0;
+                    $("#GeoJumpscare").show();
+                    $("#GeoJumpscare").trigger("play");
+                    gameOver("You died to Geo");
+                    setTimeout(() => { $("#GeoSpeech").trigger("play"); }, 1300);
+                }
+            }, 10000);
+        } else {
+            const nextMoveTime = Math.random() * 10000 + 15000;
+            GeoInterval = setTimeout(moveGeo, nextMoveTime);
         }
+    }
+}
 
 
 

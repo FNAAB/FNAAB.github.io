@@ -197,7 +197,7 @@
 <audio src="resources/door close.mp3" id="close"></audio> -->
 <video src="resources/Jumpscares/KyJumpscare.mp4" style="position: absolute; height: 100vh; width: 100vw; margin: 0; z-index: 5; top: 0; bottom: 0; left: 0; right: 0; display: none;" id="KyJumpscare" disablepictureinpicture></video>
 
-<img src="resources/image.png" id="hotdog" width="100px" height="100px" style="position: absolute; left: 4cm; top: 2cm; display: none;">
+<!-- <img src="resources/image.png" id="hotdog" width="100px" height="100px" style="position: absolute; left: 4cm; top: 2cm; display: none;"> -->
 
 <script>
 
@@ -248,26 +248,31 @@ function checkFullscreen() {
     $("#leftdoor").mousedown(function() {
         $(this).attr("src", "resources/doorclose.png")
         leftdoorclosed = true
-        // $("#close").trigger("play")
-        // $("#close").volume = 0.2
     })
 
     $("#leftdoor").mouseup(function() {
         $(this).attr("src", "resources/dooropen.png")
         leftdoorclosed = false
-        // $("#open").trigger("play")
+    })
+
+    $("#leftdoor").mouseleave(function() {
+        $(this).attr("src", "resources/dooropen.png")
+        leftdoorclosed = false
     })
 
     $("#rightdoor").mousedown(function() {
         $(this).attr("src", "resources/doorclose.png")
         rightdoorclosed = true
-        // $("#close").trigger("play")
     })
 
     $("#rightdoor").mouseup(function() {
         $(this).attr("src", "resources/dooropen.png")
         rightdoorclosed = false
-        // $("#open").trigger("play")
+    })
+
+    $("#rightdoor").mouseleave(function() {
+        $(this).attr("src", "resources/dooropen.png")
+        rightdoorclosed = false
     })
 
     $("#monitor").click(function () {
@@ -384,71 +389,85 @@ const kylinPath = ["Backstage", "Main Stage", "Dining Area", "Right Hall", "Righ
 let KyInterval
 
 function moveKylin() {
-    const currentIndex = kylinPath.indexOf(kylinLocation)
+    const currentIndex = kylinPath.indexOf(kylinLocation);
 
-    if ( kylinLocation === "Dining Area" && Math.random() < 0.3) {
-        kylinLocation = "Gas Chamber"
-        updateCamera()
-        console.log("Kylin moved to Gas Chamber")
+    if (kylinLocation === "Dining Area" && Math.random() < 0.3) {
+        kylinLocation = "Gas Chamber";
+        updateCamera();
+        console.log("Kylin moved to Gas Chamber");
 
-        const returnTime = Math.random() * 20000 + 15000
+        const returnTime = Math.random() * 20000 + 15000;
         setTimeout(() => {
-            kylinLocation = "Dining Area"
-            updateCamera()
-            console.log("Kylin moved to Dining Area")
+            kylinLocation = "Dining Area";
+            updateCamera();
+            console.log("Kylin returned to Dining Area");
 
-            const nextMoveTime = Math.random() * 20000 + 15000
-            KyInterval = setTimeout(moveKylin, nextMoveTime)
-        }, returnTime)
-
-        return
+            const nextMoveTime = Math.random() * 20000 + 15000;
+            KyInterval = setTimeout(moveKylin, nextMoveTime);
+        }, returnTime);
+        return;
     }
 
     if (currentIndex < kylinPath.length - 1) {
-        kylinLocation = kylinPath[currentIndex + 1]
-        updateCamera()
-        console.log(`Kylin moved to ${kylinLocation}`)
+        kylinLocation = kylinPath[currentIndex + 1];
+        updateCamera();
+        console.log(`Kylin moved to ${kylinLocation}`);
 
         if (kylinLocation === "Right Door") {
-            let doorinterval = setInterval(function() {
+            let doorinterval = setInterval(() => {
                 if (kylinLocation === "Right Door") {
                     if (rightdoorclosed) {
-                        $("#rightdoor").attr("src", "resources/doorclose.png")
+                        $("#rightdoor").attr("src", "resources/doorclose.png");
                     } else {
-                        $("#rightdoor").attr("src", "resources/doorKy.png")
+                        $("#rightdoor").attr("src", "resources/doorKy.png");
                     }
                 } else {
-                    $("#rightdoor").attr("src", "resources/dooropen.png")
+                    $("#rightdoor").attr("src", "resources/dooropen.png");
                 }
-                }, 10)
+            }, 10);
+
+            let doorTime = 0;
+            let doorCheckInterval = setInterval(() => {
+                if (rightdoorclosed && kylinLocation === "Right Door") {
+                    doorTime += 100;
+                    if (doorTime >= 3000) {
+                        clearInterval(doorCheckInterval);
+                        clearInterval(doorinterval);
+                        power -= 8;
+                        $("#powerleft").text(power + "%");
+                        $("#Knock").trigger("play");
+                        kylinLocation = "Main Stage";
+                        console.log("You blocked Kylin. -8% power.");
+                        updateCamera();
+                        const nextMoveTime = Math.random() * 20000 + 15000;
+                        KyInterval = setTimeout(moveKylin, nextMoveTime);
+                    }
+                } else {
+                    doorTime = 0;
+                }
+            }, 100);
 
             setTimeout(() => {
-                if (rightdoorclosed) {
-                    clearInterval(doorinterval)
-                    power -= 8
-                    $("#powerleft").text(power + "%")
-                    $("#Knock").trigger("play")
-                    kylinLocation = "Main Stage"
-                    console.log("You blocked Kylin. -8% power.")
-                    updateCamera()
-                    const nextMoveTime = Math.random() * 20000 + 15000
-                    KyInterval = setTimeout(moveKylin, nextMoveTime)
-                } else {
-                    buzz.volume = 0
-                    $("#KyJumpscare").show()
-                    $("#KyJumpscare").trigger("play")
-                    gameOver("You died to Ky")
-                    setTimeout(function() { $("#KySpeech").trigger("play") }, 1300)
+                clearInterval(doorCheckInterval);
+                if (kylinLocation === "Right Door" && doorTime < 3000) {
+                    clearInterval(doorinterval);
+                    buzz.volume = 0;
+                    $("#KyJumpscare").show();
+                    $("#KyJumpscare").trigger("play");
+                    gameOver("You died to Ky");
+                    setTimeout(() => {
+                        $("#KySpeech").trigger("play");
+                    }, 1300);
                 }
-            }, 10000)
-        }
+            }, 10000);
 
-        else {
-        const nextMoveTime = Math.random() * 20000 + 15000
-        KyInterval = setTimeout(moveKylin, nextMoveTime)
-}
-    }
+        } else {
+            const nextMoveTime = Math.random() * 20000 + 15000;
+            KyInterval = setTimeout(moveKylin, nextMoveTime);
         }
+    }
+}
+
 
 
 
@@ -493,11 +512,11 @@ function endNight() {
 
 startNight()
 
-let hotdogown = localStorage.getItem("hotdogown") === "true"
+// let hotdogown = localStorage.getItem("hotdogown") === "true"
 
-if (hotdogown) {
-    $("#hotdog").show()
-}
+// if (hotdogown) {
+//     $("#hotdog").show()
+// }
 
 </script>
 
