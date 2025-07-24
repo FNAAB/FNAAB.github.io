@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Night 5</title>
+    <title>Document</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <link rel="icon" type="image/x-icon" href="/resources/favicon.png">
 </head>
 <style>
 
@@ -682,7 +681,7 @@ function moveGeo() {
                         geoLocation = "Stage 1";
                         console.log("You blocked Geo. -5% power.");
                         updateCamera();
-                        const nextMoveTime = Math.random() * 15000 + 5000;
+                        const nextMoveTime = Math.random() * 30000 + 5000;
                         GeoInterval = setTimeout(moveGeo, nextMoveTime);
                     }
                 } else {
@@ -701,7 +700,7 @@ function moveGeo() {
                 }
             }, 10000);
         } else {
-            const nextMoveTime = Math.random() * 15000 + 5000;
+            const nextMoveTime = Math.random() * 30000 + 5000;
             GeoInterval = setTimeout(moveGeo, nextMoveTime);
         }
     }

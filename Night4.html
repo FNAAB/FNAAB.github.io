@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Night 4</title>
+    <title>Document</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <link rel="icon" type="image/x-icon" href="/resources/favicon.png">
 </head>
 <style>
 
@@ -686,7 +685,7 @@ function moveGeo() {
                         geoLocation = "Stage 1";
                         console.log("You blocked Geo. -5% power.");
                         updateCamera();
-                        const nextMoveTime = Math.random() * 15000 + 10000;
+                        const nextMoveTime = Math.random() * 30000 + 15000;
                         GeoInterval = setTimeout(moveGeo, nextMoveTime);
                     }
                 } else {
@@ -705,7 +704,7 @@ function moveGeo() {
                 }
             }, 10000);
         } else {
-            const nextMoveTime = Math.random() * 15000 + 10000;
+            const nextMoveTime = Math.random() * 30000 + 15000;
             GeoInterval = setTimeout(moveGeo, nextMoveTime);
         }
     }
@@ -724,13 +723,13 @@ function moveAz() {
     if (azLocation === "Outside") $("#AzEnter").trigger("play");
 
     if (azLocation === "Kitchen") {
-        const returnTime = Math.random() * 20000 + 5000;
+        const returnTime = Math.random() * 20000 + 10000;
         setTimeout(() => {
             azLocation = "Dining Area";
             updateCamera();
             console.log("Az moved to Dining Area");
 
-            const nextMoveTime = Math.random() * 20000 + 5000;
+            const nextMoveTime = Math.random() * 20000 + 10000;
             AzInterval = setTimeout(moveAz, nextMoveTime);
         }, returnTime);
         return;
@@ -741,13 +740,13 @@ function moveAz() {
         updateCamera();
         console.log("Az moved to Storage");
 
-        const returnTime = Math.random() * 20000 + 5000;
+        const returnTime = Math.random() * 20000 + 10000;
         setTimeout(() => {
             azLocation = "Dining Area";
             updateCamera();
             console.log("Az moved to Dining Area");
 
-            const nextMoveTime = Math.random() * 20000 + 5000;
+            const nextMoveTime = Math.random() * 20000 + 10000;
             AzInterval = setTimeout(moveAz, nextMoveTime);
         }, returnTime);
         return;
@@ -791,7 +790,7 @@ function moveAz() {
                         azLocation = "Kitchen";
                         console.log("You blocked Az. -10% power.");
                         updateCamera();
-                        const nextMoveTime = Math.random() * 20000 + 5000;
+                        const nextMoveTime = Math.random() * 20000 + 10000;
                         AzInterval = setTimeout(moveAz, nextMoveTime);
                     }
                 } else {
@@ -820,7 +819,7 @@ function moveAz() {
         updateCamera();
         console.log(`Az moved to ${azLocation}`);
 
-        const nextMoveTime = Math.random() * 20000 + 5000;
+        const nextMoveTime = Math.random() * 20000 + 10000;
         AzInterval = setTimeout(moveAz, nextMoveTime);
     }
 }
