@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Night 5</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <link rel="icon" type="image/x-icon" href="../resources/favicon.png">
+</head>
+<style>
+    @font-face {
+      font-family: Graffiti;
+      src: url(../resources/Bebas.ttf);
+    }
+
+    p, div, button, a {
+      font-family: Graffiti;
+      text-decoration: none;
+      color: white;
+      font-size: larger;
+      text-shadow: -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000,
+        2px 2px 0 #000, 0px -2px 0 #000, 0px 2px 0 #000, -2px 0px 0 #000,
+        2px 0px 0 #000;
+    }
+
+    button {
+        background: none;
+    }
+
+    body {
+        background-image: url(../resources/office.jpg);
+    }
+
+    img {
+        -webkit-user-drag: none;
+        user-select: none;
+    }
+
+    .monitor {
+        height: 500px;
+        position: absolute;
+        bottom: 185px;
+        left: 650px;
+        z-index: 1;
+    }
+
+    .leftdoorturn {
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 2cm;
+        transform: scaleX(-1);
+        opacity: 15%;
+        background-color: rgb(155, 155, 155);
+        border: 7px solid rgb(88, 88, 88);
+        border-radius: 10px;
+    }
+    .rightdoorturn {
+        position: absolute;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        width: 2cm;
+        opacity: 15%;
+        background-color: rgb(155, 155, 155);
+        border: 7px solid rgb(88, 88, 88);
+        border-radius: 10px;
+    }
+
+    #leftdoorview {
+        display: none;
+    }
+
+    .door {
+        height: 800px;
+        position: absolute;
+        bottom: 0;
+        left: 700px;
+        z-index: 2;
+        background-color: black;
+    }
+
+    .rightofficeturn {
+        position: absolute;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        width: 2cm;
+        opacity: 15%;
+        background-color: rgb(155, 155, 155);
+        border: 7px solid rgb(88, 88, 88);
+        border-radius: 10px;
+        z-index: 2;
+    }
+
+    #rightdoorview {
+        display: none;
+    }
+
+    .leftofficeturn {
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 2cm;
+        opacity: 15%;
+        transform: scaleX(-1);
+        background-color: rgb(155, 155, 155);
+        border: 7px solid rgb(88, 88, 88);
+        border-radius: 10px;
+        z-index: 2;
+        
+    }
+
+    #cameraview {
+        display: none;
+    }
+
+    #closecam {
+        position: absolute;
+        right: 0;
+        left: 0;
+        bottom: 0;
+        height: 2cm;
+        opacity: 15%;
+        background-color: rgb(155, 155, 155);
+        border: 7px solid rgb(88, 88, 88);
+        border-radius: 10px;
+        z-index: 3;
+    }
+
+    @media only screen and (height: 1440px) {
+        .monitor {
+        height: 600px;
+        position: absolute;
+        bottom: 260px;
+        left: 880px;
+        z-index: 1;
+        }
+    }
+</style>
+
+<body>
+
+    <div id="fullscreen" style="display: none; position: absolute; background-color: black; top: 0; bottom: 0; left: 0; right: 0; z-index: 66;">
+      <center> <p> please play in fullscreen! </p></center>
+    </div>
+
+    <div id="main">
+    
+    <center>
+    <img src="../resources/Dell_Computer_Monitor.webp" id="monitor" class="monitor">
+    </center>
+    <div class="leftdoorturn"> <img src="../resources/arrow.png" style="max-height: 100%; max-width: 100%; position: absolute; top: 50vh;"> </div>
+    <div class="rightdoorturn"> <img src="../resources/arrow.png" style="max-height: 100%; max-width: 100%; position: absolute; top: 50vh;"> </div> 
+
+    </div>
+
+    <div id="leftdoorview">
+        <img src="../resources/wall.webp" style="position: absolute; height: 100vh; width: 100vw; margin: 0; z-index: 2; top: 0; bottom: 0; left: 0; right: 0;">
+        <img src="../resources/dooropen.png" id="leftdoor" class="door" id="leftdoor">
+        <div class="rightofficeturn"> <img src="../resources/arrow.png" style="max-height: 100%; max-width: 100%; position: absolute; top: 50vh;"> </div>
+    </div>
+
+    <div id="rightdoorview">
+        <img src="../resources/wall.webp" style="position: absolute; height: 100vh; width: 100vw; margin: 0; z-index: 2; top: 0; bottom: 0; left: 0; right: 0;">
+        <img src="../resources/dooropen.png" id="rightdoor" class="door">
+        <div class="leftofficeturn"> <img src="../resources/arrow.png" style="max-width: 100%; max-height: 100%; position: absolute; top: 50vh;"> </div>
+    </div>
+
+    <div id="cameraview">
+        <div id="closecam"> <img src="../resources/arrow.png" style="max-height: 100%; max-width: 100%; transform: rotate(90deg); position: absolute; left: 50vi;"> </div>
+        <img id="camImage" src="../resources/rooms/Storage.webp" style="position: absolute; height: 100vh; width: 100vw; margin: 0; z-index: 2; top: 0; bottom: 0; left: 0; right: 0;">
+        <div id="camLabel" style="position: absolute; bottom: 2.5cm; left: 50%; transform: translateX(-50%); color: white; font-size: 24px; background-color: rgba(0,0,0,0.6); padding: 10px 20px; border-radius: 10px; z-index: 3; font-family: monospace;">
+            < CAM 1 - Storage >
+</div>
+
+    
+    </div>
+
+    <div id="winscreen" style="display: none; text-align: center;">
+        <div style="background-color: black; position: absolute; height: 100vh; width: 100vw; margin: 0; z-index: 6; top: 0; bottom: 0; left: 0; right: 0;"></div>
+        <p style="position: absolute; top: 45%; left: 45vi; z-index: 7; color: white;" >Congratulations! <br> <span id="dollagain" style="z-index: 6; color: white; display: none; font-size: 1cm;"></span> <br> <button style="z-index: 7; color: white;"> <a href="../Game/index.html"> To Main Menu </a> </button></p> <br>
+    </div>
+
+    <div id="lossscreen" style="display: none; text-align: center;">
+        <div style="background-color: black; position: absolute; height: 100vh; width: 100vw; margin: 0; z-index: 6; top: 0; bottom: 0; left: 0; right: 0;"></div>
+        <p style="position: absolute; top: 45%; left: 45vi; z-index: 6; color: white;">You Lost! <br> <span id="deathmessage" style="z-index: 6; color: white; display: none; font-size: 1cm;"> you died to ky </span> <br> <button style="z-index: 9;"> <a href="../Game/index.html"> To Main Menu </a> </button> <br> <button style="z-index: 9;" onclick="location.reload()"> Retry </button> </p>
+        <div style="background-color: white; position: absolute; height: 100vh; width: 100vw; margin: 0; z-index: 7; top: 0; bottom: 0; left: 0; right: 0; display: block" id="flash"></div>
+        
+    </div>
+
+    </div>   
+    
+    <div id="power" style="position: absolute; top: 10px; left: 10px; color: white; font-size: 24px; background-color: black; padding: 5px 15px; border-radius: 10px; font-family: monospace; z-index: 4;">
+    Power: <span id="powerleft"></span>
+</div>
+
+<div id="clock" style="position: absolute; top: 50px; left: 10px; color: white; font-size: 24px; background-color: black; padding: 5px 15px; border-radius: 10px; font-family: monospace; z-index: 4;">12 AM</div>
+
+<audio src="../resources/calls/Call5.mp3" autoplay></audio>
+<audio src="../resources/Knock.mp3" id="Knock"></audio>
+<audio src="../resources/office noise.mp3" autoplay loop id="buzz"></audio>
+<audio src="../resources/win.mp3" id="win"></audio>
+<audio src="../resources/AzEnter.mp3" id="AzEnter"></audio>
+<audio src="../resources/VolceEnter.mp3" id="VolceEnter"></audio>
+<audio src="../resources/Death Speach/KySpeech.mp3" id="KySpeech"></audio>
+<audio src="../resources/Death Speach/SnortsSpeech.mp3" id="SnortsSpeech"></audio>
+<audio src="../resources/Death Speach/GeoSpeech.mp3" id="GeoSpeech"></audio>
+<audio src="../resources/Death Speach/AzSpeech.mp3" id="AzSpeech"></audio>
+<audio src="../resources/Death Speach/VolceSpeech.mp3" id="VolceSpeech"></audio>
+<!-- <audio src="../resources/door open.mp3" id="open"></audio>
+<audio src="../resources/door close.mp3" id="close"></audio> -->
+<video src="../resources/Jumpscares/KyJumpscare.mp4" style="position: absolute; height: 100vh; width: 100vw; margin: 0; z-index: 5; top: 0; bottom: 0; left: 0; right: 0; display: none;" id="KyJumpscare" disablepictureinpicture></video>
+<video src="../resources/Jumpscares/SnortsJumpscare.mp4" style="position: absolute; height: 100vh; width: 100vw; margin: 0; z-index: 5; top: 0; bottom: 0; left: 0; right: 0; display: none;" id="SnortsJumpscare" disablepictureinpicture></video>
+<video src="../resources/Jumpscares/GeoJumpscare.mp4" style="position: absolute; height: 100vh; width: 100vw; margin: 0; z-index: 5; top: 0; bottom: 0; left: 0; right: 0; display: none;" id="GeoJumpscare" disablepictureinpicture></video>
+<video src="../resources/Jumpscares/AzJumpscare.mp4" style="position: absolute; height: 100vh; width: 100vw; margin: 0; z-index: 5; top: 0; bottom: 0; left: 0; right: 0; display: none;" id="AzJumpscare" disablepictureinpicture></video>
+<video src="../resources/Jumpscares/VolceJumpscare.mp4" style="position: absolute; height: 100vh; width: 100vw; margin: 0; z-index: 5; top: 0; bottom: 0; left: 0; right: 0; display: none;" id="VolceJumpscare" disablepictureinpicture></video>
+<!-- <img src="../resources/image.png" id="hotdog" width="100px" height="100px" style="position: absolute; left: 4cm; top: 2cm; display: none;"> -->
+
+<script>
+function isFullscreen() {
+  return (
+    window.innerHeight === screen.height &&
+    window.innerWidth === screen.width
+  );
+}
+
+function checkFullscreen() {
+  if (isFullscreen()) {
+    $("#fullscreen").fadeOut(); // in fullscreen
+  } else {
+    $("#fullscreen").fadeIn(); // not in fullscreen
+  }
+}
+
+    let buzz = document.getElementById("buzz")
+    buzz.volume = 0.5
+
+    let leftdoorclosed = false
+    let rightdoorclosed = false
+    let monitoropen = false
+
+    $(".leftdoorturn").click(function() {
+        $("#main").hide()
+        $("#leftdoorview").show()
+    })
+
+    $(".rightofficeturn").click(function() {
+        $("#leftdoorview").hide()
+        $("#main").show()
+    })
+
+    $(".rightdoorturn").click(function() {
+        $("#main").hide()
+        $("#rightdoorview").show()
+    })
+
+    $(".leftofficeturn").click(function() {
+        $("#rightdoorview").hide()
+        $("#main").show()
+    })
+
+    $("#leftdoor").mousedown(function() {
+        $(this).attr("src", "../resources/doorclose.png")
+        leftdoorclosed = true
+    })
+
+    $("#leftdoor").mouseup(function() {
+        $(this).attr("src", "../resources/dooropen.png")
+        leftdoorclosed = false
+    })
+
+    $("#leftdoor").mouseleave(function() {
+        $(this).attr("src", "../resources/dooropen.png")
+        leftdoorclosed = false
+    })
+
+    $("#rightdoor").mousedown(function() {
+        $(this).attr("src", "../resources/doorclose.png")
+        rightdoorclosed = true
+    })
+
+    $("#rightdoor").mouseup(function() {
+        $(this).attr("src", "../resources/dooropen.png")
+        rightdoorclosed = false
+    })
+
+    $("#rightdoor").mouseleave(function() {
+        $(this).attr("src", "../resources/dooropen.png")
+        rightdoorclosed = false
+    })
+
+    $("#monitor").click(function () {
+        monitoropen = true
+        
+        $("#main").hide()
+        $("#cameraview").show()
+        updateCamera()
+    })
+
+    $("#closecam").click(function () {
+        monitoropen = false
+        
+        $("#cameraview").hide()
+        $("#main").show()
+    })
+
+    const Cameras = [
+    { name: "Kitchen", src: "../resources/rooms/Kitchen.webp" },
+    { name: "Storage", src: "../resources/rooms/Storage.webp" },
+    { name: "Main Stage", src: "../resources/rooms/Stage.webp" },
+    { name: "Dining Area", src: "../resources/rooms/Dining.webp" },
+    { name: "Entrance / Exit", src: "../resources/rooms/Entrance.webp" },
+    { name: "Geo's Cove", src: "../resources/rooms/Geo.webp" },
+    { name: "Gas Chamber", src: "../resources/rooms/Gas.webp" },
+    { name: "Right Hall", src: "../resources/rooms/righthall.webp" },
+    { name: "Left Hall", src: "../resources/rooms/lefthall.webp" },
+    { name: "Closet", src: "../resources/rooms/Closet.webp" },
+]
+
+
+let currentCam = 0
+
+function updateCamera() {
+    let camName = Cameras[currentCam].name
+
+
+    $("#camImage").attr("src", Cameras[currentCam].src)
+    $("#camLabel").text(`< ${camName} >`)
+
+    
+    if (camName === "Main Stage" && kylinLocation === "Main Stage") {
+        $("#camImage").attr("src", "../resources/rooms/Stage_Ky.webp")
+    }
+    if (camName === "Dining Area" && kylinLocation === "Dining Area") {
+        $("#camImage").attr("src", "../resources/rooms/Dining_Ky.webp")
+    }
+    if (camName === "Right Hall" && kylinLocation === "Right Hall") {
+        $("#camImage").attr("src", "../resources/rooms/righthall_Ky.webp")
+    }
+    if (camName === "Gas Chamber" && kylinLocation === "Gas Chamber") {
+        $("#camImage").attr("src", "../resources/rooms/Gas_Ky.webp")
+    }
+    if (camName === "Main Stage" && snortsLocation === "Main Stage") {
+        $("#camImage").attr("src", "../resources/rooms/Stage_Snorts.webp")
+    }
+    if (camName === "Dining Area" && snortsLocation === "Dining Area") {
+        $("#camImage").attr("src", "../resources/rooms/Dining_Snorts.webp")
+    }
+    if (camName === "Main Stage" && snortsLocation === "Main Stage" && kylinLocation === "Main Stage") {
+        $("#camImage").attr("src", "../resources/rooms/Stage_Ky_Snorts.webp")
+    }
+    if (camName === "Dining Area" && snortsLocation === "Dining Area" && kylinLocation === "Dining Area") {
+        $("#camImage").attr("src", "../resources/rooms/Dining_Ky_Snorts.webp")
+    }
+    if (camName === "Left Hall" && snortsLocation === "Left Hall") {
+        $("#camImage").attr("src", "../resources/rooms/lefthall_Snorts.webp")
+    }
+    if (camName === "Closet" && snortsLocation === "Closet") {
+        $("#camImage").attr("src", "../resources/rooms/Closet_Snorts.webp")
+    }
+    if (camName === "Geo's Cove" && geoLocation === "Stage 1" && monitoropen === true) {
+        $("#camImage").attr("src", "../resources/rooms/Geo1.webp")
+        geoMove = false
+    } else if (camName === "Geo's Cove" && geoLocation === "Stage 2" && monitoropen === true) {
+        $("#camImage").attr("src", "../resources/rooms/Geo2.webp")
+        geoMove = false
+    } else if (camName === "Geo's Cove" && geoLocation === "Stage 3" && monitoropen === true) {
+        $("#camImage").attr("src", "../resources/rooms/Geo3.webp")
+        geoMove = false
+    } else if (monitoropen === false) {
+        geoMove = true
+    }
+
+    if (geoMove !== geoNoMove && nightstarted == true) {
+        if (geoMove) {
+            clearInterval(geoInterval)
+            moveGeo()
+        } else {
+            clearInterval(geoInterval)
+    }
+        geoNoMove = geoMove;
+    }
+
+    if (camName === "Dining Area" && azLocation === "Dining Area") {
+        $("#camImage").attr("src", "../resources/rooms/Dining_Az.webp")
+    }
+    if (camName === "Dining Area" && azLocation === "Dining Area" && kylinLocation === "Dining Area") {
+        $("#camImage").attr("src", "../resources/rooms/Dining_Ky_Az.webp")
+    }
+    if (camName === "Dining Area" && snortsLocation === "Dining Area" && azLocation === "Dining Area") {
+        $("#camImage").attr("src", "../resources/rooms/Dining_Snorts_Az.webp")
+    }
+    if (camName === "Dining Area" && snortsLocation === "Dining Area" && kylinLocation === "Dining Area" && azLocation === "Dining Area") {
+        $("#camImage").attr("src", "../resources/rooms/Dining_Ky_Snorts_Az.webp")
+    }
+    if (camName === "Entrance / Exit" && azLocation === "Entrance / Exit") {
+        $("#camImage").attr("src", "../resources/rooms/Entrance_Az.webp")
+    }
+    if (camName === "Left Hall" && azLocation === "Left Hall") {
+        $("#camImage").attr("src", "../resources/rooms/lefthall_Az.webp")
+    }
+    if (camName === "Right Hall" && azLocation === "Right Hall") {
+        $("#camImage").attr("src", "../resources/rooms/righthall_Az.webp")
+    }
+    if (camName === "Storage" && azLocation === "Storage") {
+        $("#camImage").attr("src", "../resources/rooms/Storage_Az.webp")
+    }
+    if (camName === "Kitchen" && azLocation === "Kitchen") {
+        $("#camImage").attr("src", "../resources/rooms/Kitchen_Az.webp")
+    }
+    if (camName === "Kitchen" && volceLocation === 0) {
+        $("#camImage").attr("src", "../resources/rooms/Kitchen_V.webp")
+    }
+    if (camName === "Storage" && volceLocation === 1) {
+        $("#camImage").attr("src", "../resources/rooms/Storage_V.webp")
+    }
+    if (camName === "Main Stage" && volceLocation === 2) {
+        $("#camImage").attr("src", "../resources/rooms/Stage_V.webp")
+    }
+    if (camName === "Dining Area" && volceLocation === 3) {
+        $("#camImage").attr("src", "../resources/rooms/Dining_V.webp")
+    }
+    if (camName === "Entrance / Exit" && volceLocation === 4) {
+        $("#camImage").attr("src", "../resources/rooms/Entrance_V.webp")
+    }
+    if (camName === "Geo's Cove" && geoLocation === "Stage 1" && volceLocation === 5) {
+        $("#camImage").attr("src", "../resources/rooms/Geo1_V.webp")
+    }
+    if (camName === "Geo's Cove" && geoLocation === "Stage 2" && volceLocation === 5) {
+        $("#camImage").attr("src", "../resources/rooms/Geo2_V.webp")
+    }
+    if (camName === "Geo's Cove" && geoLocation === "Stage 3" && volceLocation === 5) {
+        $("#camImage").attr("src", "../resources/rooms/Geo3_V.webp")
+    }
+    if (camName === "Geo's Cove" && geoLocation === "Left Door" && volceLocation === 5) {
+        $("#camImage").attr("src", "../resources/rooms/Geo_V.webp")
+    }
+    if (camName === "Gas Chamber" && volceLocation === 6) {
+        $("#camImage").attr("src", "../resources/rooms/Gas_V.webp")
+    }
+    if (camName === "Right Hall" && volceLocation === 7) {
+        $("#camImage").attr("src", "../resources/rooms/righthall_V.webp")
+    }
+    if (camName === "Left Hall" && volceLocation === 8) {
+        $("#camImage").attr("src", "../resources/rooms/lefthall_V.webp")
+    }
+    if (camName === "Closet" && volceLocation === 9) {
+        $("#camImage").attr("src", "../resources/rooms/Closet_V.webp")
+    }
+    if (kylinIndex === 4) {
+        $("#rightdoor").attr("src", "../resources/doorKy.png")
+        if (rightdoorclosed) {
+            $("#rightdoor").attr("src", "../resources/doorclose.png")
+        }
+    }
+    if (snortsIndex === 4) {
+        $("#leftdoor").attr("src", "../resources/doorSnorts.png")
+        if (leftdoorclosed) {
+            $("#leftdoor").attr("src", "../resources/doorclose.png")
+        }
+    }
+    if (azLocation === "Right Door") {
+        $("#rightdoor").attr("src", "../resources/doorAz.png")
+        if (rightdoorclosed) {
+            $("#rightdoor").attr("src", "../resources/doorclose.png")
+        }
+    }
+    if (azLocation === "Left Door") {
+        $("#leftdoor").attr("src", "../resources/doorAz.png")
+        if (leftdoorclosed) {
+            $("#leftdoor").attr("src", "../resources/doorclose.png")
+        }
+    }
+}
+
+let cameraInterval = setInterval(updateCamera, 10)
+
+$("#camLabel").on("click", function (e) {
+    const labelWidth = $(this).width()
+    const clickX = e.pageX - $(this).offset().left
+
+    if (clickX < labelWidth / 3 && currentCam > 0) {
+        currentCam--
+    } else if (clickX > (2 * labelWidth / 3) && currentCam < Cameras.length - 1) {
+        currentCam++
+    } else {
+        return
+    }
+
+    updateCamera()
+})
+
+function stopAll() {
+    clearInterval(KyInterval)
+    clearInterval(geoInterval)
+    clearInterval(snortsInterval)
+    clearInterval(azInterval)
+    clearInterval(hourInterval)
+    clearInterval(cameraInterval)
+}
+
+function gameOver(message) {
+    buzz.volume = 0
+    stopAll()
+    $("#lossscreen").delay(1300).fadeIn(0)
+    $("#flash").delay(1300).fadeOut(2000)
+    $("#deathmessage").text(message).delay(3300).fadeIn(600)
+}
+
+
+
+let power = 300
+
+let BonusPower = localStorage.getItem("BonusPower")
+      if (!BonusPower) {
+        power = 300
+      } else {
+        power = 500
+      }
+
+$("#powerleft").text(power + "%")
+
+    let powerInterval = setInterval(() => {
+    if (monitoropen) {
+    power -= 1
+    if (power <= 0) {
+        power = 0
+        clearInterval(powerInterval)
+        gameOver("you ran out of power")
+    }
+    $("#powerleft").text(power + "%")
+}
+}, 2000)
+ 
+
+
+
+
+
+
+let kylinPath = ["Backstage", "Main Stage", "Dining Area", "Right Hall", "Right Door"]
+let KyInterval
+let kylinAI = 5
+let kylinIndex = 0
+let kylinLocation = kylinPath[kylinIndex]
+
+function moveKylin() {
+
+    KyInterval = setInterval(() => {
+        let move = Math.floor(Math.random() * 20) + 1
+
+        if (kylinIndex === 4 && !rightdoorclosed) {
+            if (move <= kylinAI) {
+                buzz.volume = 0
+                $("#KyJumpscare").show()
+                $("#KyJumpscare").trigger("play")
+                gameOver("You died to Ky")
+                setTimeout(() => {
+                    $("#KySpeech").trigger("play");
+                }, 1300);
+            }
+        } else if (kylinIndex === 4 && rightdoorclosed) {
+                power -= 8
+                $("#powerleft").text(power + "%")
+                $("#Knock").trigger("play")
+                kylinIndex = 1
+                kylinLocation = kylinPath[kylinIndex]
+        } else if (move <= kylinAI) {
+
+            if (kylinLocation === "Dining Area" && Math.random() < 0.3) {
+                kylinLocation = "Gas Chamber"
+            } 
+
+            else if (kylinLocation === "Gas Chamber") {
+                    kylinIndex = 2
+                    kylinLocation = kylinPath[kylinIndex]
+            } else {
+                    kylinIndex++
+                    kylinLocation = kylinPath[kylinIndex]
+                } 
+        }
+        console.log("ky is in: " + kylinLocation)
+    }, 5000)
+}
+
+
+let snortsPath = ["Backstage", "Main Stage", "Dining Area", "Left Hall", "Left Door"]
+let snortsInterval
+let snortsAI = 7
+let snortsIndex = 0
+let snortsLocation = snortsPath[snortsIndex]
+
+function moveSnorts() {
+    snortsInterval = setInterval(() => {
+        let move = Math.floor(Math.random() * 20) + 1
+
+        if (snortsIndex === 4 && !leftdoorclosed) {
+            if (move <= snortsAI) {
+                buzz.volume = 0
+                $("#SnortsJumpscare").show()
+                $("#SnortsJumpscare").trigger("play")
+                gameOver("You died to Snorts")
+                setTimeout(() => { 
+                    $("#SnortsSpeech").trigger("play"); 
+                }, 1300);
+            }
+        } else if (snortsIndex === 4 && leftdoorclosed) {
+                power -= 6
+                $("#powerleft").text(power + "%")
+                $("#Knock").trigger("play")
+                snortsIndex = 1
+                snortsLocation = snortsPath[snortsIndex]
+        } else if (move <= snortsAI) {
+            if (snortsIndex === 3 && Math.random() < 0.4) {
+                snortsLocation = "Closet"
+            } else if (snortsLocation === "Closet") {
+                snortsIndex = 3
+                snortsLocation = snortsPath[snortsIndex]
+            } else {
+                snortsIndex++
+                snortsLocation = snortsPath[snortsIndex]
+            }
+        }
+        console.log("Snorts is in: " + snortsLocation)
+    }, 5000)
+}
+
+
+let geoPath = ["Stage 1", "Stage 2", "Stage 3", "Left Door"]
+let geoMove = true
+let geoNoMove = false
+let geoInterval
+let geoAI = 5
+let geoIndex = 0
+let geoLocation = geoPath[geoIndex]
+
+
+function moveGeo() {
+    geoInterval = setInterval(() => {
+        let move = Math.floor(Math.random() * 20) + 1
+
+        if (geoIndex === 3 && !leftdoorclosed) {
+            if (move <= geoAI) {
+                buzz.volume = 0
+                $("#GeoJumpscare").show()
+                $("#GeoJumpscare").trigger("play")
+                gameOver("You died to Geo")
+                setTimeout(() => { 
+                    $("#GeoSpeech").trigger("play"); 
+                }, 1300);
+            }
+        } else if (geoIndex === 3 && leftdoorclosed) {
+                power -= 5
+                $("#powerleft").text(power + "%")
+                $("#Knock").trigger("play")
+                geoIndex = 0
+                geoLocation = geoPath[geoIndex]
+        } else if (geoMove === true) {
+             if (move <= geoAI) {
+                geoIndex++
+                geoLocation = geoPath[geoIndex]
+            }
+        }
+        console.log("Geo is in: " + geoLocation)
+    }, 5000)
+}
+
+
+
+
+let azPath = ["Outside", "Entrance / Exit", "Dining Area"]
+let azLeftPath = ["Left Hall", "Left Door"]
+let azRightPath = ["Right Hall", "Right Door"]
+let azInterval
+let azAI = 5
+let azIndex = 0
+let azLocation = azPath[azIndex]
+let azEnter = false
+
+function moveAz() {
+    azInterval = setInterval(() => {
+        let move = Math.floor(Math.random() * 20) + 1
+
+        if (azIndex === 0 && azEnter == false) {
+                $("#AzEnter").trigger("play")
+                azEnter = true
+            }
+
+        if (azLocation === "Left Door" && !leftdoorclosed) {
+            if (move <= azAI) {
+                buzz.volume = 0
+                $("#AzJumpscare").show()
+                $("#AzJumpscare").trigger("play")
+                gameOver("You died to Az")
+                setTimeout(() => {
+                    $("#AzSpeech").trigger("play"); 
+                }, 1300);
+            }
+        } else if (azLocation === "Left Door" && leftdoorclosed) {
+                power -= 10
+                $("#powerleft").text(power + "%")
+                $("#Knock").trigger("play")
+                azPath = azPath.filter(x => !azLeftPath.includes(x))
+                azPath = azPath.filter(x => !azRightPath.includes(x))
+                azIndex = 2
+                azLocation = "Kitchen"
+        } else if (azLocation == undefined) {
+            azIndex = 2
+            azLocation = azPath[azIndex]
+        } else if (azLocation === "Right Door" && !rightdoorclosed) {
+            if (move <= azAI) {
+                buzz.volume = 0
+                $("#AzJumpscare").show()
+                $("#AzJumpscare").trigger("play")
+                gameOver("you died to Az")
+                setTimeout(() => {
+                    $("#AzSpeech").trigger("play"); 
+                }, 1300);
+            }
+        } else if (azLocation === "Right Door" && rightdoorclosed) {
+                power -= 10
+                $("#powerleft").text(power + "%")
+                $("#Knock").trigger("play")
+                azPath = azPath.filter(x => !azLeftPath.includes(x))
+                azPath = azPath.filter(x => !azRightPath.includes(x))
+                azIndex = 2
+                azLocation = "Kitchen"
+        } else if (move <= azAI) {
+            if (azLocation === "Kitchen") {
+                azIndex = 2
+                azLocation = azPath[azIndex]
+            } else if (azIndex === 2 && Math.random() < 0.3) {
+                azLocation = "Storage"
+            } else if (azLocation === "Storage") {
+                azIndex = 2
+                azLocation = azPath[azIndex]
+            } else if (azIndex === 2 && Math.random() >= 0.3) {
+                if (Math.random() <= 0.5) {
+                    azPath = azPath.concat(azLeftPath)
+                    azIndex++
+                    azLocation = azPath[azIndex]
+                } else {
+                    azPath = azPath.concat(azRightPath)
+                    azIndex++
+                    azLocation = azPath[azIndex]
+                }
+            } else {
+                azIndex++
+                azLocation = azPath[azIndex]
+            }
+        }
+        console.log("Az is in: " + azLocation);
+        console.log(azPath);
+    }, 5000)
+}
+
+
+
+let volceOn = true
+let volceLocation = null
+let volceActive = false
+
+let volceRooms = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+
+function spawnVolce() {
+    if (volceActive) return
+
+    volceActive = true
+    volceLocation = volceRooms[Math.floor(Math.random() * volceRooms.length)]
+    $("#VolceEnter").trigger("play")
+
+    let lookAtTime = 0
+
+    const Check = setInterval(() => {
+        if (!volceActive) {
+            clearInterval(Check)
+            return
+        }
+
+        if (monitoropen && currentCam === volceLocation) {
+            lookAtTime += 100
+
+            if (lookAtTime >= 3000) {
+                volceActive = false
+                volceLocation = null
+                clearInterval(Check)
+                clearTimeout(volceFailTimer)
+            }
+        } else {
+            lookAtTime = 0
+        }
+    }, 100)
+
+    volceFailTimer = setTimeout(() => {
+        if (volceActive) {
+            volceActive = false
+            clearInterval(Check)
+            $("#VolceJumpscare").show()
+            $("#VolceJumpscare").trigger("play")
+            gameOver("You died to Volce")
+            setTimeout(() => {
+                $("#VolceSpeech").trigger("play")
+            }, 1300)
+        }
+    }, 30000)
+}
+
+
+
+
+
+
+function updateClockDisplay() {
+    const hourdisplay = hour === 0 ? "12 AM" : hour < 6 ? `${hour} AM`  : "6 AM"
+    $("#clock").text(hourdisplay)
+}
+
+let hour = 0
+let hourInterval
+
+let nightstarted = false
+function start() {
+    nightstarted = true
+    hour = 0
+    updateClockDisplay()
+    hourInterval = setInterval(() => {
+        hour++
+        updateClockDisplay()
+
+            snortsAI = snortsAI !== 20 ? snortsAI + 1 : snortsAI
+                if (hour >= 2 && hour < 5) {
+                    kylinAI = kylinAI !== 20 ? kylinAI + 1 : kylinAI
+                    geoAI = geoAI !== 20 ? geoAI + 1 : geoAI
+                } 
+        
+        if (hour < 6) {
+            if (volceOn) {
+            spawnVolce()
+            }
+        } else {
+            endNight()
+        }
+    }, 45000)
+
+    moveKylin()
+    moveSnorts()
+    moveGeo()
+    moveAz()
+}
+
+function endNight() {
+    buzz.volume = 0
+    stopAll()
+    $("#winscreen").fadeIn(3000)
+    $("#main").fadeOut(3000)
+    $("#win").trigger("play")
+    localStorage.setItem("Night5Complete", "true")
+
+    let gain = Math.floor(Math.random() * 51) + 100
+    let dolla = Number(localStorage.getItem("dolla")) || 0
+    dolla += gain
+    localStorage.setItem("dolla", dolla)
+
+    $("#dollagain").text("your reward: $" + gain).delay(3300).fadeIn(600)
+}
+
+setTimeout(start, 15000)
+
+</script>
+
+</body>
+</html>
