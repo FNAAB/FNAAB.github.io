@@ -686,7 +686,7 @@ let azPath = ["Outside", "Entrance / Exit", "Dining Area"]
 let azLeftPath = ["Left Hall", "Left Door"]
 let azRightPath = ["Right Hall", "Right Door"]
 let azInterval
-let azAI = 2
+let azAI = 4
 let azIndex = 0
 let azLocation = azPath[azIndex]
 let azEnter = false
@@ -770,7 +770,7 @@ function moveAz() {
 
 
 
-let volceOn = true
+let volceOn = false
 let volceLocation = null
 let volceActive = false
 
@@ -847,6 +847,10 @@ function start() {
                     kylinAI = kylinAI !== 20 ? kylinAI + 1 : kylinAI
                     geoAI = geoAI !== 20 ? geoAI + 1 : geoAI
                 } 
+
+                if (hour == 4) {
+                    spawnVolce()
+                }
         
         if (hour < 6) {
             if (volceOn) {
