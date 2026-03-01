@@ -564,11 +564,13 @@ $("#camLabel").on("click", function (e) {
     updateCamera()
 })
 
+let nightover = false
 function stopAll() {
-    clearInterval(KyInterval)
+    nightover = true
+    clearTimeout(KyInterval)
     clearInterval(geoInterval)
-    clearInterval(snortsInterval)
-    clearInterval(azInterval)
+    clearTimeout(snortsInterval)
+    clearTimeout(azInterval)
     clearInterval(hourInterval)
     clearInterval(cameraInterval)
     geoAI = 0
@@ -584,7 +586,7 @@ function gameOver(message) {
 
 
 
-let power = 300
+let power = 200
 
 let BonusPower = localStorage.getItem("BonusPower")
       if (!BonusPower) {
@@ -621,7 +623,10 @@ let kylinLocation = kylinPath[kylinIndex]
 
 function moveKylin() {
 
-    KyInterval = setInterval(() => {
+    function Ky() {
+
+        if (nightover) return
+    
         let move = Math.floor(Math.random() * 20) + 1
 
         if (kylinIndex === 4 && !rightdoorclosed) {
@@ -654,8 +659,13 @@ function moveKylin() {
                     kylinLocation = kylinPath[kylinIndex]
                 } 
         }
-        console.log("ky is in: " + kylinLocation)
-    }, 5000)
+        
+        KyInterval = setTimeout(Ky, Math.floor(Math.random() * 4500) + 4500)
+
+    }
+
+    Ky()
+
 }
 
 
@@ -666,7 +676,11 @@ let snortsIndex = 0
 let snortsLocation = snortsPath[snortsIndex]
 
 function moveSnorts() {
-    snortsInterval = setInterval(() => {
+
+        function Snorts() {
+
+            if (nightover) return
+    
         let move = Math.floor(Math.random() * 20) + 1
 
         if (snortsIndex === 4 && !leftdoorclosed) {
@@ -697,7 +711,10 @@ function moveSnorts() {
             }
         }
         console.log("Snorts is in: " + snortsLocation)
-    }, 5000)
+        snortsInterval = setTimeout(Snorts, Math.floor(Math.random() * 4500) + 4500)
+    }
+
+    Snorts()
 }
 
 
@@ -753,7 +770,11 @@ let azLocation = azPath[azIndex]
 let azEnter = false
 
 function moveAz() {
-    azInterval = setInterval(() => {
+
+    function Az() {
+
+        if (nightover) return
+    
         let move = Math.floor(Math.random() * 20) + 1
 
         if (azIndex === 1 && azEnter == false) {
@@ -826,7 +847,11 @@ function moveAz() {
         }
         console.log("Az is in: " + azLocation);
         console.log(azPath);
-    }, 5000)
+        azInterval = setTimeout(Az, Math.floor(Math.random() * 4500) + 4500)
+    
+    }
+
+    Az()
 }
 
 

@@ -231,8 +231,6 @@
 <!-- <img src="../resources/image.png" id="hotdog" width="100px" height="100px" style="position: absolute; left: 4cm; top: 2cm; display: none;"> -->
 
 <script>
-
-    localStorage.setItem("Night3Started", true)
 function isFullscreen() {
   return (
     window.innerHeight === screen.height &&
@@ -525,7 +523,7 @@ function gameOver(message) {
 
 
 
-let power = 300
+let power = 200
 
 let BonusPower = localStorage.getItem("BonusPower")
       if (!BonusPower) {
@@ -886,5 +884,4 @@ setTimeout(start, 15000)
 </script>
 
 </body>
-
 </html>
