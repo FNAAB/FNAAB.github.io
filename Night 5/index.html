@@ -526,9 +526,7 @@ function gameOver(message) {
 let power = 200
 
 let BonusPower = localStorage.getItem("BonusPower")
-      if (!BonusPower) {
-        power = 300
-      } else {
+      if (BonusPower) {
         power = 500
       }
 
